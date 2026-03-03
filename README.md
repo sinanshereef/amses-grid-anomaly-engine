@@ -75,25 +75,15 @@ These features significantly improve model accuracy and anomaly detection reliab
 
 ## 🖥️ Streamlit UI Preview
 
-> Replace the image below with your actual screenshot file name.
-
 ```markdown
-![AMSES Streamlit UI](assets/streamlit_ui.png)
+<img width="1919" height="980" alt="image" src="https://github.com/user-attachments/assets/ca22cace-51e4-4122-b2c0-c29ecae30733" />
+
+<img width="1919" height="980" alt="image" src="https://github.com/user-attachments/assets/32c3291b-467f-4e5d-a46b-8d3acde5572a" />
+
+<img width="1919" height="983" alt="image" src="https://github.com/user-attachments/assets/a5ffe5a6-f52b-4d3c-ad76-0f5cf793fb9d" />
+
+<img width="1919" height="973" alt="image" src="https://github.com/user-attachments/assets/f76e8cb0-b79d-461a-9d55-f4d04437969c" />
 ```
-
-### 📌 How to Add Screenshot
-
-1. Take a screenshot of your running Streamlit app.
-2. Create a folder in your repo called `assets`
-3. Save the image as:
-
-```
-assets/streamlit_ui.png
-```
-
-4. Push to GitHub.
-
----
 
 ## ⚙️ Installation
 
