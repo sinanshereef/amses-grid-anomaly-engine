@@ -75,7 +75,6 @@ These features significantly improve model accuracy and anomaly detection reliab
 
 ## 🖥️ Streamlit UI Preview
 
-```markdown
 <img width="1919" height="980" alt="image" src="https://github.com/user-attachments/assets/ca22cace-51e4-4122-b2c0-c29ecae30733" />
 
 <img width="1919" height="980" alt="image" src="https://github.com/user-attachments/assets/32c3291b-467f-4e5d-a46b-8d3acde5572a" />
@@ -83,7 +82,6 @@ These features significantly improve model accuracy and anomaly detection reliab
 <img width="1919" height="983" alt="image" src="https://github.com/user-attachments/assets/a5ffe5a6-f52b-4d3c-ad76-0f5cf793fb9d" />
 
 <img width="1919" height="973" alt="image" src="https://github.com/user-attachments/assets/f76e8cb0-b79d-461a-9d55-f4d04437969c" />
-```
 
 ## ⚙️ Installation
 
