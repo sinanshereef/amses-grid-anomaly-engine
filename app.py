@@ -5,9 +5,8 @@ import joblib
 import plotly.graph_objects as go
 from datetime import date
 
-# ─────────────────────────────────────────────
+
 #  PAGE CONFIG
-# ─────────────────────────────────────────────
 st.set_page_config(
     page_title="AMSES — Smart Energy Intelligence Platform",
     page_icon="⚡",
@@ -15,9 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ─────────────────────────────────────────────
 #  CUSTOM CSS  (light theme — minimal)
-# ─────────────────────────────────────────────
 st.markdown("""
 <style>
     .stApp { background-color: #f0f4f8; }
@@ -88,9 +85,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ─────────────────────────────────────────────
+
 #  ANOMALY LABEL MAP
-# ─────────────────────────────────────────────
+
 ANOMALY_LABELS = {
     0: ("✅ Normal – No Anomaly",         "normal",  "The meter is operating within expected parameters. No suspicious activity detected."),
     1: ("⚠️ Meter Bypass / Tampering",    "danger",  "Possible meter tampering or bypass detected. Immediate field inspection recommended."),
@@ -99,9 +96,9 @@ ANOMALY_LABELS = {
     4: ("🔴 Overload / High Usage",       "danger",  "Extremely high energy usage detected. Risk of overload or illegal commercial activity."),
 }
 
-# ─────────────────────────────────────────────
+
 #  MODEL LOADER
-# ─────────────────────────────────────────────
+
 @st.cache_resource
 def load_model():
     try:
@@ -111,9 +108,9 @@ def load_model():
 
 model, scaler, model_loaded = load_model()
 
-# ─────────────────────────────────────────────
+
 #  HEADER
-# ─────────────────────────────────────────────
+
 st.markdown("""
 <div class="header-banner">
     <h1>⚡ AMSES — Smart Energy Intelligence Platform</h1>
@@ -142,9 +139,9 @@ with st.sidebar:
     st.markdown("## ℹ️ About")
     st.markdown("Built with **Random Forest Classifier** trained on Kerala smart meter data. Feature engineering runs automatically in the background.")
 
-# ─────────────────────────────────────────────
+
 #  HELPERS
-# ─────────────────────────────────────────────
+
 SEASON_ENCODE   = {"Summer": 2, "Monsoon": 1, "Winter": 0}
 DWELLING_ENCODE = {"Apartment": 0, "Commercial": 1, "Independent House": 2, "Villa": 3}
 
@@ -153,9 +150,8 @@ def get_season(month):
     if month in [6, 7, 8, 9]: return "Monsoon"
     return "Winter"
 
-# ─────────────────────────────────────────────
 #  INPUT FORM
-# ─────────────────────────────────────────────
+
 with st.form("prediction_form"):
 
     # ── Section 1 ─────────────────────────────
@@ -228,9 +224,9 @@ with st.form("prediction_form"):
     st.markdown("<br>", unsafe_allow_html=True)
     submitted = st.form_submit_button("🔍 Predict Anomaly")
 
-# ─────────────────────────────────────────────
+
 #  PREDICTION + VISUALISATIONS
-# ─────────────────────────────────────────────
+
 if submitted:
 
     # ── Feature Engineering ────────────────────
@@ -290,9 +286,9 @@ if submitted:
     }
     main_color = CHART_COLORS[pred]
 
-    # ══════════════════════════════════════════
+  
     #  ROW 1 — Gauge · Bar · Donut
-    # ══════════════════════════════════════════
+  
     st.markdown("#### 📊 Prediction Analysis")
     c1, c2, c3 = st.columns([1, 1.1, 0.95])
 
@@ -387,9 +383,9 @@ if submitted:
         )
         st.plotly_chart(fig_donut, use_container_width=True, config={"displayModeBar": False})
 
-    # ══════════════════════════════════════════
+    
     #  ROW 2 — Radar · Key Indicators
-    # ══════════════════════════════════════════
+    
     st.markdown("#### 🔬 Feature Analysis")
     c4, c5 = st.columns([1.3, 1])
 
@@ -498,18 +494,15 @@ if submitted:
                   "High Risk" if anomaly_risk_score>=3 else ("Medium" if anomaly_risk_score>=1 else "Low Risk"),
                   "#dc2626" if anomaly_risk_score>=3 else ("#ca8a04" if anomaly_risk_score>=1 else "#16a34a"))
 
-    # ══════════════════════════════════════════
+   
     #  Metrics Row
-    # ══════════════════════════════════════════
     st.markdown("---")
     m1, m2, m3 = st.columns(3)
     m1.metric("Model Confidence",   f"{confidence}%")
     m2.metric("Detected Anomaly",   f"Type {pred}")
     m3.metric("Anomaly Risk Score", anomaly_risk_score)
 
-    # ══════════════════════════════════════════
     #  Auto-Computed Features Table
-    # ══════════════════════════════════════════
     st.markdown("### 🔧 Auto-Computed Backend Features")
     st.markdown("These values were **automatically derived** from your inputs and fed to the model:")
 
@@ -545,9 +538,7 @@ if submitted:
     }
     st.dataframe(pd.DataFrame(fe_data), use_container_width=True, hide_index=True)
 
-    # ══════════════════════════════════════════
     #  Recommended Action
-    # ══════════════════════════════════════════
     actions = {
         0: ("No Action Required",            "#16a34a", "📋",
             "The meter is functioning normally. Continue regular monthly monitoring."),
