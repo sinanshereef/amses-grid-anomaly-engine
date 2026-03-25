@@ -1,16 +1,9 @@
-# ============================================================
-# Kerala Smart Meter Synthetic Dataset Generator (v5)
-# Author: Production-grade generation for ML fraud detection
-# ============================================================
+
 
 import numpy as np
 import pandas as pd
 
 np.random.seed(42)
-
-# ============================================================
-# GLOBAL CONFIG
-# ============================================================
 
 TOTAL_ROWS = 10000
 
@@ -23,10 +16,6 @@ CLASS_COUNTS = {
 }
 
 DWELLINGS = ["Apartment", "Independent House", "Villa", "Commercial"]
-
-# ============================================================
-# HELPERS
-# ============================================================
 
 def random_dates(n):
     start = pd.Timestamp("2022-01-01")
@@ -87,17 +76,11 @@ def gen_meter_ids(n):
     nums = np.random.randint(0, 10**8, n)
     return [f"IN-KL-ELC-{x:08d}" for x in nums]
 
-# ============================================================
-# BASE GENERATOR
-# ============================================================
-
 def generate_class(n, cls):
 
     df = pd.DataFrame()
 
-    # -----------------------
-    # Static features
-    # -----------------------
+
     df["Meter_ID"] = gen_meter_ids(n)
     df["Dwelling_Type"] = np.random.choice(DWELLINGS, n)
     df["Num_Occupants"] = np.random.randint(1, 9, n)
@@ -129,9 +112,6 @@ def generate_class(n, cls):
     # Appliance score
     df["Appliance_Score"] = np.random.randint(1, 26, n)
 
-    # ============================================================
-    # CLASS-SPECIFIC RULES
-    # ============================================================
 
     if cls == 0:
         df["Anomaly_Type"] = 0
@@ -231,9 +211,7 @@ def generate_class(n, cls):
     return df
 
 
-# ============================================================
-# GENERATE ALL CLASSES
-# ============================================================
+
 
 frames = []
 for cls, cnt in CLASS_COUNTS.items():
@@ -241,9 +219,6 @@ for cls, cnt in CLASS_COUNTS.items():
 
 df = pd.concat(frames, ignore_index=True)
 
-# ============================================================
-# SENSOR NOISE
-# ============================================================
 
 df["Temperature_C"] += np.random.normal(0, 0.3, len(df))
 df["Humidity_pct"]  += np.random.normal(0, 0.5, len(df))
@@ -270,9 +245,7 @@ float_cols = [
 ]
 df[float_cols] = df[float_cols].round(2)
 
-# ============================================================
-# ZERO EDGE CASES
-# ============================================================
+
 
 type0_idx = df[df["Anomaly_Type"] == 0].index
 zero_peak_idx = np.random.choice(type0_idx, 12, replace=False)
@@ -281,9 +254,7 @@ zero_off_idx  = np.random.choice(list(set(type0_idx) - set(zero_peak_idx)), 8, r
 df.loc[zero_peak_idx, "Peak_Hour_Usage_kWh"] = "0.0 kWh"
 df.loc[zero_off_idx,  "Off_Peak_Usage_kWh"]  = "0.0 kWh"
 
-# ============================================================
-# NaN INJECTION
-# ============================================================
+
 
 nan_pool = np.random.choice(np.arange(10000), size=438, replace=False)
 
@@ -294,22 +265,15 @@ df.loc[nan_pool[40:50],  "Appliance_Score"]    = np.nan
 df.loc[nan_pool[50:303], "Expected_Energy_kWh"] = np.nan
 df.loc[nan_pool[303:438],"Actual_Energy_kWh"]   = np.nan
 
-# ============================================================
-# DUPLICATES (35)
-# ============================================================
+
 
 dup_idx = np.random.choice(df.index, 35, replace=False)
 df_final = pd.concat([df, df.loc[dup_idx]], ignore_index=True)
 
-# ============================================================
-# SHUFFLE
-# ============================================================
+
 
 df_final = df_final.sample(frac=1, random_state=42).reset_index(drop=True)
 
-# ============================================================
-# VALIDATION
-# ============================================================
 
 print("=== VALIDATION SUMMARY ===")
 print(f"Total rows: {len(df_final)}")
@@ -370,9 +334,6 @@ print(f"Power_Factor sample: {df_final.Power_Factor.head(3).tolist()}")
 
 print("\n=== END VALIDATION ===")
 
-# ============================================================
-# SAVE
-# ============================================================
 
 df_final.drop(columns=["_act_num"], inplace=True, errors="ignore")
 df_final.to_csv("kerala_smart_meter_v6.csv", index=False)
